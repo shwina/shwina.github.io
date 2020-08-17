@@ -116,7 +116,7 @@ foo_tests.pyx:19
 A function from a Cython module is not a "regular" Python function,
 and `pytest` refuses to collect it:
 
-```
+```python
 >>> import inspect
 >>> from foo_tests import test_primes   
 >>> type(test_primes)                   
@@ -157,7 +157,7 @@ def test_primes(data, expect):
 True
 ```
 
-```
+```bash
 $ pytest
 ======================= test session starts =======================
 test_foo.py . 
@@ -184,7 +184,7 @@ def test_primes(data, expect):
     assert primes(0) == []
 ```
 
-```
+```bash
 $ pytest
 ======================= test session starts =======================
 test_foo.py ....
