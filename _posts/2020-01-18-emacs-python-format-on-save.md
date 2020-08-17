@@ -9,6 +9,7 @@ This post is about configuring [Elpy](https://elpy.readthedocs.io/en/latest/)
 and Emacs to auto-format Python buffers using [Black](https://github.com/psf/black)
 for a specific project (i.e., using [Directory Variables][directory-variables]).
 
+
 *Note: for a while, I used [firestarter][firestarter] to accomplish this,
 but that approach seemed clunky for what I needed.
 I mention it here as another useful tool for run-on-save in Emacs*
