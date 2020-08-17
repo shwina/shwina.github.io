@@ -12,4 +12,4 @@ and I'm part of the team developing [RAPIDS](https://rapids.ai/).
 I live in Toronto, Canada.
 
 You can see what I'm up to
-these days by visiting my GitHub profile: https://github.com/shwina
+these days by visiting my GitHub profile: <https://github.com/shwina>.
