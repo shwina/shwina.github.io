@@ -1,16 +1,7 @@
----
-title: "About"
-permalink: "/about/"
-layout: page
----
+# Ashwin Srinath's blog
 
+This is the repository for my personal blog: <htpps://shwina.github.io>.
 
-I am a Software Engineer at [NVIDIA](https://www.nvidia.com/),
-and I'm part of the team developing [RAPIDS](https://rapids.ai/).
-You can see what I'm up to
-these days by visiting my GitHub profile: <https://github.com/shwina>.
-
-I live in Toronto, Canada:
-
-<a href=""><img src="{{site.url}}/images/toronto.jpg" align="middle" height="500"></a>
-
+This blog is built upon <https://github.com/niklasbuschmann/contrast>,
+and is modified to use [Gruvbox](https://github.com/morhetz/gruvbox)
+as its color scheme.
