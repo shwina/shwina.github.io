@@ -1,4 +1,4 @@
-{%- assign posts = paginator.posts | default: site.posts -%}
+{%- assign posts = paginator.posts -%}
 {% for post in posts %}
   <article>
     {% include meta.html post=post preview=true %}
@@ -7,10 +7,10 @@
   </article>
 {% endfor %}
 
-{% if paginator.total_pages > 1 %}
-  <footer>
-    {% if paginator.previous_page %}<a href="{{ paginator.previous_page_path | relative_url }}">« newer posts</a>{% else %}<span></span>{% endif %}
-    <span>page {{ paginator.page }} of {{ paginator.total_pages }}</span>
-    {% if paginator.next_page %}<a href="{{ paginator.next_page_path | relative_url }}">older posts »</a>{% else %}<span></span>{% endif %}
-  </footer>
-{% endif %}
+<!-- {% if paginator.total_pages > 1 %} -->
+<!--   <footer> -->
+<!--     {% if paginator.previous_page %}<a href="{{ paginator.previous_page_path | relative_url }}">« newer posts</a>{% else %}<span></span>{% endif %} -->
+<!--     <span>page {{ paginator.page }} of {{ paginator.total_pages }}</span> -->
+<!--     {% if paginator.next_page %}<a href="{{ paginator.next_page_path | relative_url }}">older posts »</a>{% else %}<span></span>{% endif %} -->
+<!--   </footer> -->
+<!-- {% endif %} -->
