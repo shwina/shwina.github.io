@@ -8,10 +8,8 @@ This post is about using `pytest` for testing `cdef` functions in Cython.
 
 ## The problem
 
-Consider the below `cdef` function in Cython,
-taken from the [Cython tutorial][tutorial].
-It accepts a parameter `nb_primes` and returns a C++ vector
-containing the first `nb_primes` prime numbers.
+Consider the `primes` function below,
+which returns the first `n` prime numbers as a C++ vector:
 
 ```cython
 # file: foo.pxd
@@ -19,7 +17,7 @@ containing the first `nb_primes` prime numbers.
 cdef vector[int] primes(unsigned int nb_primes)
 ```
 
-How can we write tests for the `primes` function
+How can we write tests for `primes`
 in a way that they are automatically discovered and run
 by a test runner such as `pytest`?
 
