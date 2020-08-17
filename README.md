@@ -4,7 +4,6 @@ permalink: "/about/"
 layout: page
 ---
 
-## About me
 
 I am a Software Engineer at [NVIDIA](https://www.nvidia.com/),
 and I'm part of the team developing [RAPIDS](https://rapids.ai/).
