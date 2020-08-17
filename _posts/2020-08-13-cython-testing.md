@@ -97,7 +97,7 @@ for mod in cython_test_modules:
 
 Now, our tests are discovered by `pytest` but they are not actually run:
 
-```
+```bash
 $ pytest
 ======================= test session starts =======================
 collected 0 items                                                          
