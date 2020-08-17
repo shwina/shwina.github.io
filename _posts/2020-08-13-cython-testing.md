@@ -3,15 +3,19 @@ layout: post
 title: "Using pytest with Cython"
 ---
 
-This post is about using `pytest` for testing Cython code.
+This post is about using `pytest` for testing `cdef` functions in Cython.
 
 
 ## The problem
 
-Consider the `primes` function below (taken from the [Cython Tutorial][tutorial]),
-defined in a file `foo.pyx`:
+Consider the below `cdef` function in Cython,
+taken from the [Cython tutorial][tutorial].
+It accepts a parameter `nb_primes` and returns a C++ vector
+containing the first `nb_primes` prime numbers.
 
 ```cython
+# file: foo.pyx
+
 # distutils: language=c++
 # distutils: extra_compile_args=-std=c++11
 
@@ -36,17 +40,27 @@ cdef vector[int] primes(unsigned int nb_primes):
     return p
 ```
 
-How do we write tests for the `primes` function in a way that they are automatically
-discovered and run by a test runner such as `pytest`?
+The corresponding `.pxd` file:
+
+```cython
+# file: foo.pxd
+
+cdef vector[int] primes(unsigned int nb_primes)
+```
+
+How can we write tests for the `primes` function
+in a way that they are automatically discovered and run
+by a test runner such as `pytest`?
 
 ## Writing the tests
 
-
-`cdef` functions in Cython can only be called from Cython code.
+`cdef` functions can only be called from Cython code.
 Thus, tests for `cdef` functions must be written in Cython.
 Let's write a very simple test for `primes` in a separate file `foo_tests.pyx`:
 
 ```cython
+# file: foo_tests.pyx
+
 # distutils: language=c++
 # distutils: extra_compile_args=-std=c++11
 
@@ -76,6 +90,8 @@ To make our Cython tests discoverable, we can make them attributes of a
 Python module `test_foo.py` as follows:
 
 ```python
+# file: test_foo.py
+
 import importlib
 import sys
 
