@@ -77,7 +77,7 @@ Compiling both using Cython:
 $ cythonize -i foo.pyx foo_tests.pyx
 ```
 
-At this point, running `pytest` doesn't do anything:
+Note that at this point, running `pytest` doesn't do anything:
 
 ```bash
 $ pytest
@@ -87,8 +87,10 @@ $ pytest
 
 ## Making tests discoverable
 
-To make our Cython tests discoverable, we can make them attributes of a
-Python module `test_foo.py` as follows:
+`pytest` doesn't know to look for tests in Cython modules.
+To make our tests discoverable,
+we can make them attributes of a Python module
+`test_foo.py` as follows:
 
 ```python
 # file: test_foo.py
@@ -112,7 +114,8 @@ for mod in cython_test_modules:
         pass
 ```
 
-Now, our tests are discovered by `pytest` but they are not actually run:
+Now, our tests are discovered by `pytest`:
+
 
 ```bash
 $ pytest
@@ -127,6 +130,8 @@ foo_tests.pyx:19
 -- Docs: https://docs.pytest.org/en/latest/warnings.html
 ====================== 1 warning in 0.02s =========================
 ```
+
+...but, they aren't actually run.
 
 ## Making tests runnable
 
