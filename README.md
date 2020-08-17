@@ -6,7 +6,7 @@ layout: page
 
 ## About me
 
-I am a Software Engineer at [NVIDA](https://www.nvidia.com/),
+I am a Software Engineer at [NVIDIA](https://www.nvidia.com/),
 and I'm part of the team developing [RAPIDS](https://rapids.ai/).
 
 I live in Toronto, Canada.
