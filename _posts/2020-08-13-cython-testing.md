@@ -14,6 +14,20 @@ It accepts a parameter `nb_primes` and returns a C++ vector
 containing the first `nb_primes` prime numbers.
 
 ```cython
+# file: foo.pxd
+
+cdef vector[int] primes(unsigned int nb_primes)
+```
+
+How can we write tests for the `primes` function
+in a way that they are automatically discovered and run
+by a test runner such as `pytest`?
+
+---
+**Note**: the `.pxd` file above contains only the "definition" of `primes`.
+Here is the actual implementation:
+
+```cython
 # file: foo.pyx
 
 # distutils: language=c++
@@ -39,18 +53,7 @@ cdef vector[int] primes(unsigned int nb_primes):
     # lists when converted to Python objects.
     return p
 ```
-
-The corresponding `.pxd` file:
-
-```cython
-# file: foo.pxd
-
-cdef vector[int] primes(unsigned int nb_primes)
-```
-
-How can we write tests for the `primes` function
-in a way that they are automatically discovered and run
-by a test runner such as `pytest`?
+---
 
 ## Writing the tests
 
