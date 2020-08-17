@@ -13,7 +13,7 @@ for a specific project (i.e., using [Directory Variables][directory-variables]).
 but that approach seemed clunky for what I needed.
 I mention it here as another useful tool for run-on-save in Emacs*
 
-# Configuring the Elpy RPC virtualenv
+## Configuring the Elpy RPC virtualenv
 
 When using Elpy, there are two virtualenvs (or alternatively, conda environments)
 involved:
@@ -42,7 +42,7 @@ At this point, you should run `M-x elpy-config` to make sure
 Elpy has found the right virtualenv,
 and also is able to find the `black` formatter.
 
-# Create (or update) `.dir-locals.el`
+## Create (or update) `.dir-locals.el`
 
 The [`.dir-locals.el`][directory-variables] file allows you to define variables
 local to a directory and its sub-directories.
@@ -56,7 +56,7 @@ and add the following entry:
 ((python-mode . ((eval . (add-hook 'after-save-hook #'elpy-black-fix-code nil t)))))
 ```
 
-# Restart Emacs and auto-format away!
+## Restart Emacs and auto-format away!
 
 After a restart of Emacs, run `M-x pyvenv-activate` again,
 and navigate to your project directory.
