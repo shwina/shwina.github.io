@@ -54,7 +54,7 @@ Place the `.dir-locals.el` file in your project's top-level directory,
 and add the following entry:
 
 ```elisp
-((python-mode . ((eval . (add-hook 'after-save-hook #'elpy-black-fix-code nil t)))))
+((python-mode . ((eval . (add-hook 'before-save-hook #'elpy-black-fix-code nil t)))))
 ```
 
 ## Restart Emacs and auto-format away!
