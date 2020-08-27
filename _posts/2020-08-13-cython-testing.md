@@ -229,6 +229,13 @@ using the following approach:
 
 3. Run `pytest` as usual.
 
+
+---
+**Note**: The above examples use Cython 3.0.
+If you are using an older version of Cython, it may be necessary
+to set the Cython compiler directive `binding=True`.
+See [here][compiler-directives] for more information.
+
 [tutorial]: https://cython.readthedocs.io/en/latest/src/tutorial/cython_tutorial.html#primes-with-c
 
-
+[compiler-directives]: https://cython.readthedocs.io/en/latest/src/userguide/source_files_and_compilation.html#compiler-directives
