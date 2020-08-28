@@ -8,5 +8,5 @@ so proud to be a part of this community:
 
 
 
-<a href=""><img src="{{site.url}}/images/maintainer-certificate.png" align="middle" height="500"></a>
+<a href=""><img src="{{site.url}}/images/maintainer-certificate.png" align="middle" height="500" alt="Maintainer Certificate"></a>
 

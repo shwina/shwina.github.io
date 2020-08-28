@@ -81,8 +81,6 @@ And use the resulting `gmon.sum` to generate
 $ gprof hibye.exe gmon.sum
 ```
 
-[Credit](https://cluster.earlham.edu/wiki/index.php/Cluster:Gprof#Basic_Recipe_-_Parallel_MPI_Code)
-where it's due. 
 Now, I haven't figured out how to replace the `pid`
 with the MPI rank - 
 this could be exponentially more useful to some users.
@@ -92,7 +90,7 @@ But I'm sure this is possible with some ingenuity.
 
 ## mpiP
 
-[mpiP](https://mpip.sourceforge.net/) is a neat little
+[mpiP](https://github.com/LLNL/mpiP) is a neat little
 tool for profiling MPI applications.
 In particular, it's extremely useful in figuring out
 how much your application is spending time *communicating*

@@ -27,7 +27,7 @@ argument makes sense: we are scientists, and founding our teaching
 methods on hard research--or at the very least, _some_ data--is likely a
 better idea than using arbitrary lesson plans and teaching techniques. 
 Accordingly, as a starting point, I chose the Software Carpentry 
-<a href="https://software-carpentry.org/v5/novice/python/index.html" target="_blank">
+<a href="https://swcarpentry.github.io/python-novice-inflammation/" target="_blank">
 lesson material on Python </a>
 These lessons have the immense value of _feedback_ from several
 workshops that have been run by trained instructors all over the world.

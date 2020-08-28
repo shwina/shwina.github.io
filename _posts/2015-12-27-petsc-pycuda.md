@@ -33,7 +33,6 @@ you can get a pointer to the raw device memory
 using the `thrust::raw_pointer_cast` function.
 This device pointer can be passed to your own custom kernels,
 functions from other GPU libraries, whatever.
-See a few examples of this [here](https://www.mcs.anl.gov/petsc/petsc-current/src/vec/vec/impls/seq/seqcusp/veccusp.cu#VecCUSPGetCUDAArray).
 
 Here's how to do it with `petsc4py` and PyCUDA.
 We'll multiply two vectors (elementwise)

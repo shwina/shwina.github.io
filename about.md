@@ -12,5 +12,5 @@ these days by visiting my GitHub profile: <https://github.com/shwina>.
 
 I live in Toronto, Canada:
 
-<a href=""><img src="{{site.url}}/images/toronto.jpg" align="middle" height="500"></a>
+<a href=""><img src="{{site.url}}/images/toronto.jpg" align="middle" height="500" alt="Toronto"></a>
 
