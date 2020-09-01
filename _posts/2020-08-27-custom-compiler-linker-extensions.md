@@ -100,7 +100,6 @@ class custom_build_ext(build_ext):
         # removes the "default" compiler flags that would
         # otherwise get passed on to to the compiler, i.e.,
         # distutils.sysconfig.get_var("CFLAGS").
-        breakpoint()
         self.compiler.set_executable("compiler_so", "g++")
         self.compiler.set_executable("compiler_cxx", "g++")
         self.compiler.set_executable("linker_so", "g++")
