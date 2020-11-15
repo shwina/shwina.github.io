@@ -6,6 +6,7 @@ title: Customizing the compiler and linker used by setuptools
 This post is about how to customize the compiler and linker used
 when building a C/C++ extension for Python using setuptools.
 
+
 I recently ran into the problem of configuring setuptools to use a custom
 compiler and linker, and these are my notes on how I did that.
 
