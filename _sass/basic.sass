@@ -1,6 +1,12 @@
-html
-  background: $dark
-  color: $light
+@media (prefers-color-scheme: light)
+  html
+    background: $light
+    color: $dark
+
+@media (prefers-color-scheme: dark)
+  html
+    background: $dark
+    color: $light
 
 html
   font-size: 16px
