@@ -1,19 +1,13 @@
 ---
 layout: post
-title: Customizing the compiler and linker when building C/C++ extensions for Python
+title: Customizing the compiler and linker used by setuptools
 ---
 
 This post is about how to customize the compiler and linker used
-when building a C/C++ extension.
+when building a C/C++ extension for Python using setuptools.
 
-
-Sometimes, you want to build an extension module using a different compiler than
-`gcc` or whatever compiler is used by setuptools to build extensions.
-Additionally, you may want to pass custom flags to the compiler/linker.
-Importantly, you may want to prevent the "default" flags from being passed to
-your custom compiler,
-perhaps because it doesn't support them. This post shows one way of achieving just that.
-
+I recently ran into the problem of configuring setuptools to use a custom
+compiler and linker, and these are my notes on how I did that.
 
 As an example, here is a simple `setup.py` for building the extension `spam` from
 `spammodule.c`:
@@ -38,32 +32,25 @@ running build_ext
 building '*' extension
 creating build
 creating build/temp.macosx-10.9-x86_64-3.7
-gcc -Wno-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -I/Users/ashwin/miniconda3/envs/sci37/include -arch x86_64 -I/Users/ashwin/miniconda3/envs/sci37/include -arch x86_64 -I/Users/ashwin/miniconda3/envs/sci37/include/python3.7m -c spammodule.c -o build/temp.macosx-10.9-x86_64-3.7/spammodule.o
-creating build/lib.macosx-10.9-x86_64-3.7
-gcc -bundle -undefined dynamic_lookup -L/Users/ashwin/miniconda3/envs/sci37/lib -arch x86_64 -L/Users/ashwin/miniconda3/envs/sci37/lib -arch x86_64 -arch x86_64 build/temp.macosx-10.9-x86_64-3.7/spammodule.o -o build/lib.macosx-10.9-x86_64-3.7/*.cpython-37m-darwin.so
+gcc -Wno-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 ...
 ```
 
 Using a different compiler than `gcc` is easy -- just set the value
-of the `CC` environment variable.
-Just for illustration, we'll consider changing the compiler from `gcc` to `g++`:
-
+of the `CC` environment variable:
 
 ```bash
+$ CC=g++ python setup.py build_ext --inplace
+
 running build_ext
 building 'spam' extension
 creating build
 creating build/temp.macosx-10.9-x86_64-3.7
-g++ -Wno-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -I/Users/ashwin/miniconda3/envs/sci37/include -arch x86_64 -I/Users/ashwin/miniconda3/envs/sci37/include -arch x86_64 -I/Users/ashwin/miniconda3/envs/sci37/include/python3.7m -c spammodule.c -o build/temp.macosx-10.9-x86_64-3.7/spammodule.o
-clang: warning: treating 'c' input as 'c++' when in C++ mode, this behavior is deprecated [-Wdeprecated]
-creating build/lib.macosx-10.9-x86_64-3.7
-g++ -bundle -undefined dynamic_lookup -L/Users/ashwin/miniconda3/envs/sci37/lib -arch x86_64 -L/Users/ashwin/miniconda3/envs/sci37/lib -arch x86_64 -arch x86_64 build/temp.macosx-10.9-x86_64-3.7/spammodule.o -o build/lib.macosx-10.9-x86_64-3.7/spam.cpython-37m-darwin.so
-copying build/lib.macosx-10.9-x86_64-3.7/spam.cpython-37m-darwin.so ->
+g++ -Wno-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 ...
 ```
 
-The compiler has indeed changed from `gcc` to `g++`, but we notice that the
-arguments to the compiler remain the same as before.
-This can be a problem if the compiler you want to use doesn't support one or more 
-of these arguments.
+The compiler has changed from `gcc` to `g++`, but we notice that the
+arguments passed to the compiler remain the same.
+This can be a problem if you want to use a compiler that doesn't support those argument.
 
 ---
 
@@ -86,8 +73,9 @@ configuration options.
 
 ---
 
-One way to override these flags entirely is to set the compiler/linker executables
-within distitutils as follows:
+You can override these flags entirely and pass your own flags using
+the `extra_compile_args` and `extra_link_args` options, as follows:
+
 
 ```python
 from setuptools.command.build_ext import build_ext
@@ -121,11 +109,8 @@ setup(
 )
 ```
 
-Doing this erases *all* the compiler flags passed to the compiler and linker,
-so any flags you wish to pass must be done so via the
-`extra_compiler_args` and `extra_link_args` options.
-
-Now we see that we have full control over the flags passed to the compiler and linker commands:
+Now we see that we have full control over the flags passed
+to the compiler and linker commands:
 
 ```bash
 $ python setup.py build_ext --inplace
