@@ -3,14 +3,14 @@ layout: post
 title: "__get__ it right: controlling attribute access in Python"
 ---
 
-In this post, I explain how to control attribute access in Python.
-I also talk about descriptors and how they fit into the picture.
-
-
 In Python, you use the dot (`.`) operator to access attributes of an object.
-Normally, this isn't something you have to give much thought to.
+Normally, that isn't something you have to give much thought to.
 However, when you want to customize what happens during attribute access,
 things can get complicated.
+
+
+In this post, I explain how to control attribute access in Python.
+I also talk about descriptors and how they fit into the picture.
 
 - TOC
 {:toc}
@@ -18,9 +18,10 @@ things can get complicated.
 ## Class and instance attributes
 
 There are two kinds of attributes in Python:
-class attributes and instance attributes.
-To understand the difference between them,
-consider the following class `Speaker`.
+_class_ and _instance_ attributes.
+In the following class,
+`volume` is a _class_ attribute,
+and `line` is an instance attribute.
 
 ```python
 class Speaker:
@@ -33,22 +34,18 @@ class Speaker:
         return line if self.volume == "low" else line.upper()
 ```
 
-When constructing a Speaker instance,
-you provide a line for it to speak.
-When you call its `speak()` method,
-it simply returns ("speaks") that  line.
+Each instance of the class has its own `line` attribute:
 
 ```python
 >>> a = Speaker("hello")
 >>> b = Speaker("goodbye")
 >>> a.speak()
-'hello'
+"hello"
 >>> b.speak()
-'goodbye'
+"goodbye"
 ```
 
-The class attribute `volume`
-can be used to control the loudness of the speakers:
+The class attribute `volume` is shared by all instances.
 
 ```python
 >>> Speaker.volume = "high"
@@ -58,15 +55,17 @@ can be used to control the loudness of the speakers:
 'GOODBYE'
 ```
 
-The important thing to notice here is the difference
-between `volume` (a class attribute)
-and `line` (an instance attribute).
-Class attributes are shared by all instances of the class,
-whereas each instance has its own copy of instance attributes.
-Changing the class attribute `volume`
-changed the behaviour of both `a` and `b`.
+Each instance has an _instance dictionary_ where instance
+attributes are stored:
 
-Class attributes are stored in a class dictionary `ClassName.__dict__`:
+```python
+>>> a.__dict__
+{'line': 'hello'}
+>>> b.__dict__
+{'line': 'goodbye'}
+```
+
+Class attributes are stored in a class dictionary:
 
 ```python
 >>> Speaker.__dict__
@@ -79,22 +78,9 @@ mappingproxy({'__module__': '__main__',
               '__doc__': None})
 ```
 
-Each instance of a class has its _own_ instance dictionary,
-where its instance attributes are stored:
-
-```python
->>> a.__dict__
-{'line': 'hello'}
->>> b.__dict__
-{'line': 'goodbye'}
-```
-
 ## Descriptors
 
-Descriptors are another important concept related to attribute access.
-They are a slightly advanced concept, so feel free to skip this section
-on your first read of this article.
-
+Descriptors are an important concept related to attribute access.
 A descriptor is a class that defines one or more of the following methods:
 
 1. `__get__()`,
@@ -112,22 +98,23 @@ class ZeroAttribute:
         return 0
 ```
 
-Descriptors are only useful when you make them class variables:
+Descriptors are only useful as class variables:
 
 ```python
 class Foo:
     x = ZeroAttribute()
 ```
 
-Now, accessing the `x` attribute will run the `__get__()` method of the descriptor:
+Accessing `Foo.` will run its `__get__()` method:
 
 ```python
 >>> Foo.x  # calls ZeroAttribute.__get__()
 0
 ```
 
-Keep in mind that you can also access `x` as an _instance_ attribute,
-which _also_ runs the same `__get__()` method:
+Even though `x` was defined like a class attribute,
+you can also access `x` as an _instance_ attribute,
+which _also_ invokes the `ZeroAttribute.__get__()` method:
 
 ```python
 >>> a = Foo()
@@ -147,10 +134,9 @@ The `__get__()` method accepts two arguments, `obj` and `owner`.
   `obj` is set to the instance, and `owner` is set to the type of the instance.
 
 This lets you specify different behaviour
-for class attribute access and instance attribute access
-in the descriptor.
-For example, if you explicitly don't want to allow a descriptor to be accessed
-as a class attribute, you can do something like the following:
+for class attribute access and instance attribute access.
+For example, if you explicitly don't want to allow class attribute access,
+you can do something like this:
 
 ```python
 class ZeroAttribute:
@@ -436,6 +422,7 @@ class IncrementingAttribute:
             obj._value = -1
         obj._value += 1
         return obj._value
+        
     def __set__(self, obj, value):
         obj._value = value - 1
 
@@ -446,7 +433,36 @@ class MyClass:
 Now, we get the expected reset behaviour:
 
 ```python
+>>> obj = MyClass()
+>>> obj.x
+0
+>>> obj.x
+1
+>>> obj.x = 0
+>>> obj.x
+0
+>>> obj.x
+1
 ```
+
+### What about `property`?
+
+You could also use a `property` to achieve the same result:
+
+```python
+class MyClass:
+    @property
+    def x(self):
+        if not hasattr(self, "_value"):
+            self._value = -1
+        self._value += 1
+        return self._value
+        
+    @x.setter
+    def x(self, value):
+        self._value = value - 1
+```
+
 
 ## Further reading
 
