@@ -368,7 +368,6 @@ class MyClass:
 
 As expected, the `x` is updated each time it is accessed:
 
-```
 ```python
 >>> obj = MyClass()
 >>> obj.x
