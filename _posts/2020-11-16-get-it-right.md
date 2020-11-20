@@ -9,8 +9,12 @@ However, when you want to customize what happens during attribute access,
 things can get complicated.
 
 
-In this post, I explain how to control attribute access in Python.
-I also talk about descriptors and how they fit into the picture.
+In this post, we'll see how to control what happens when you use the dot operator.
+Before we can talk about customizing attribute access,
+we need to discuss two related topics:
+**class and instance attributes**, and **descriptors**.
+If both of those are familiar to you,
+feel free to skip ahead.
 
 - TOC
 {:toc}
