@@ -20,7 +20,7 @@ I also talk about descriptors and how they fit into the picture.
 There are two kinds of attributes in Python:
 _class_ and _instance_ attributes.
 In the following class,
-`volume` is a _class_ attribute,
+`volume` is a class attribute,
 and `line` is an instance attribute.
 
 ```python
@@ -34,7 +34,9 @@ class Speaker:
         return line if self.volume == "low" else line.upper()
 ```
 
-Each instance of the class has its own `line` attribute:
+Each instance of the class has its own `line` attribute.
+It's easy to see why calling `a.speak()` below returns `"hello"`
+while `b.speak()` returns `"goodbye"`:
 
 ```python
 >>> a = Speaker("hello")
@@ -46,6 +48,7 @@ Each instance of the class has its own `line` attribute:
 ```
 
 The class attribute `volume` is shared by all instances.
+If you change its value, that change is visible to both `a` and `b`:
 
 ```python
 >>> Speaker.volume = "high"
@@ -65,7 +68,7 @@ attributes are stored:
 {'line': 'goodbye'}
 ```
 
-Class attributes are stored in a class dictionary:
+Class attributes are stored in a _class dictionary_:
 
 ```python
 >>> Speaker.__dict__
@@ -77,6 +80,9 @@ mappingproxy({'__module__': '__main__',
               '__weakref__': <attribute '__weakref__' of 'Speaker' objects>,
               '__doc__': None})
 ```
+
+It's important to remember this distinction between
+instance and class attributes (and where they are stored).
 
 ## Descriptors
 
@@ -457,12 +463,16 @@ class MyClass:
             self._value = -1
         self._value += 1
         return self._value
-        
+
     @x.setter
     def x(self, value):
         self._value = value - 1
 ```
 
+In fact, `@property` is really just a way to define a (data) descriptor!
+So if you find yourself writing properties that all look the same
+(either in the same class or across different classes),
+that's a sign that you should write a descriptor instead.
 
 ## Further reading
 
