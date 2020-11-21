@@ -263,7 +263,7 @@ The problem is this line in `MyClass.__getattribute__()`,
 which itself calls `MyClass.__getattribute__()`:
 
 ```python
-return self.__dict__[x]  # calls self.__getattr__("__dict__") - infinite recursion!
+return self.__dict__[name]  # calls self.__getattr__("__dict__") - infinite recursion!
 ```
 
 ### Overriding `__getattribute__()` - the less wrong, but still wrong, way
