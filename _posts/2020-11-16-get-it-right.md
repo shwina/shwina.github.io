@@ -105,7 +105,7 @@ class Foo:
     x = ZeroAttribute()
 ```
 
-Accessing `Foo.` will run its `__get__()` method:
+Accessing `Foo.x` will run its `__get__()` method:
 
 ```python
 >>> Foo.x  # calls ZeroAttribute.__get__()
@@ -127,7 +127,7 @@ which _also_ invokes the `ZeroAttribute.__get__()` method:
 
 The `__get__()` method accepts two arguments, `obj` and `owner`.
 
-* If the `__get__()` method is called by accessing a _class_ attribute,
+* If the `__get__()` method is called by acessing a _class__ attribute,
   `obj` is set to `None`, and `owner` is set to the class.
 
 * If the `__get__()` method is called by accessing an _instance_ attribute,
@@ -178,7 +178,7 @@ and a little bit about descriptors,
 you're ready to understand how attribute access _really_ works in Python,
 and how to customize it.
 
-When you write `x.y`, the `__getattribute__()` method of `x` is invoked.
+When you write `x.y`, the `x.__getattribute__()` method is invoked.
 The default implementation of `__getattribute__()` does the following:
 
   - First, it checks if `y` is a _data_ descriptor.
@@ -231,9 +231,9 @@ class MyClass:
     def __init__(self, x):
         self.x = x
         
-    def __getattribute__(self, x):
+    def __getattribute__(self, name):
         try:
-            return self.__dict__[x]
+            return self.__dict__[name]
         except KeyError:
             return None
 ```
@@ -288,14 +288,13 @@ This gives us the behaviour we want:
 >>>
 ```
 
-### Overriding `__getattr__` - the right approach
+### Using `__getattr__` - the right approach
 
-The more elegant solution is simply
-to override `__getattr__`.
+The more elegant solution is to write a `__getattr__()` method.
 Recall that the default implementation of
-`__getattribute__` will raise `AttributeError`
+`__getattribute__()` will raise `AttributeError`
 when it doesn't find an attribute.
-When that happens, `__getattr__` is called:
+When that happens, `__getattr__()` is called:
 
 ```python
 class MyClass:
@@ -356,7 +355,7 @@ class MyClass:
     x = IncrementingAttribute()
 ```
 
-As expected, the `x` is updated each time it is accessed:
+The attribute `x` is updated each time it is accessed:
 
 ```
 ```python
@@ -370,7 +369,9 @@ As expected, the `x` is updated each time it is accessed:
 What happens if we "reset" the value of `x` and then try to access it?
 
 ```python
->>> obj.x = 0
+>>> obj.x
+1
+>>> obj.x = 0  # reset to 0
 >>> obj.x
 0
 >>> obj.x
@@ -379,7 +380,7 @@ What happens if we "reset" the value of `x` and then try to access it?
 0
 ```
 
-Oh no! The `x` has somehow lost the ability to update itself.
+Oh no! `x` has somehow lost the ability to update itself.
 To understand why,
 it's first important to understand what happens when the following line is executed:
 
@@ -387,22 +388,29 @@ it's first important to understand what happens when the following line is execu
 obj.x =  0
 ```
 
-Because the descriptor object `MyClass.x` does not define a `__set__()` method,
+Because `x` does not define a `__set__()` method,
 this line will fall back to the default behaviour of setting an attribute.
 That is, it will add an entry `'x'` to the instance dictionary of `obj`.
 You can see this by inspecting the `__dict__` attribute before and after
 setting the attribute `x`:
 
 ```python
+>>> obj = MyClass()
+>>> obj.x
+0
 >>> obj.__dict__
-{'_value': 2}
+{'_value': 0}
+>>> obj.x
+1
+>>> obj.__dict__
+{'_value': 1}
 >>> obj.x = 1   # adds entry 'x' to obj.__dict__
-{'_value': 2, 'x': 1}
+{'_value': 1, 'x': 1}
 ```
 
-Also recall that `x` is a _non-data descriptor_, that is,
-the descriptor class `IncrementingAttribute` only defines a `__get__()` method.
-Because `__getattribute__` looks in the instance dictionary _before_
+Recall that `x` is a _non-data descriptor_, that is,
+it only defines a `__get__()` method.
+Because `__getattribute__()` looks in the instance dictionary _before_
 checking for non-data descriptors,
 it finds `x` in the instance dictionary and returns that.
 
